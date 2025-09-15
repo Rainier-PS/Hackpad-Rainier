@@ -1,6 +1,6 @@
 # Hackpad-Rainier
 
-Hackpad-Rainier is a small 3x3 macropad featuring an encoder, OLED display, LED backlight, and various keymap layers. It is constructed using KMK firmware and the Seeed XIAO RP2040. It is designed to facilitate shortcuts, media management, number entry, and visual feedback for different layers.
+This hackpad is a small 3x3 macropad featuring an encoder, OLED display, LED backlight, and various keymap layers. It is constructed using KMK firmware and the Seeed XIAO RP2040. It is designed to facilitate shortcuts, media management, number entry, and visual feedback for different layers.
 
 ## Features
 
