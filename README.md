@@ -15,16 +15,16 @@ This hackpad is a small 3x3 macropad featuring an encoder, OLED display, LED bac
 ## Visual Overview
 
 ### Assembled Hackpad
-![cad_screenshot](images/CAD.png)
-![cad_screenshot](images/CAD-Top.png)
+![cad_screenshot](images/CAD.avif)
+![cad_screenshot](images/CAD-Top.avif)
 
 >In accordance with the submission requirements, the interior of both the top and bottom parts of the case are branded with my name.
 
 ### Schematic
-![Schematic](images/Schematics.png)
+![Schematic](images/Schematics.avif)
 
 ### PCB Layout
-![PCB](images/PCB.png)
+![PCB](images/PCB.avif)
 
 ## Layer Configuration
 
