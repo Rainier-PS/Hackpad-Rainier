@@ -29,7 +29,7 @@ This hackpad is a small 3x3 macropad featuring an encoder, OLED display, LED bac
 ## Layer Configuration
 
 ### Layer 0 – Shortcuts and Media
-| Top Row       | Middle Row     | Bottom Row    |
+| Top Col       | Middle Col     | Bottom Col     |
 |---------------|----------------|----------------|
 | Media Prev    | Play/Pause     | Media Next     |
 | Undo          | Redo           | Save           |
@@ -39,11 +39,11 @@ Encoder: Volume control (default)
 Encoder button: Toggle between volume, zoom, brightness, and timeline scrubbing
 
 ### Layer 1 – Numpad
-| Top Row       | Middle Row     | Bottom Row    |
+| Top Col       | Middle Col     | Bottom Col     |
 |---------------|----------------|----------------|
-| 7             | 8              | 9              |
-| 4             | 5              | 6              |
 | 1             | 2              | 3              |
+| 4             | 5              | 6              |
+| 7             | 8              | 9              |
 
 Encoder and screen modes remain active.
 
