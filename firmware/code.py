@@ -3,73 +3,52 @@ print("Starting")
 import board
 import busio
 
-from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
-from kmk.scanners import DiodeOrientation
-from kmk.modules.macros import Macros
-from kmk.modules.encoder import EncoderHandler
-from kmk.modules.combos import Combos, Chord
 from kmk.modules.layers import Layers
+from kmk.kmk_keyboard import KMKKeyboard
+from kmk.scanners import DiodeOrientation
 from kmk.modules.mouse_keys import MouseKeys
-from kmk.modules.mouse_jiggler import MouseJiggler
+from kmk.modules.combos import Combos, Chord
+from kmk.modules.encoder import EncoderHandler
 from kmk.extensions.media_keys import MediaKeys
-from kmk.extensions.display import Display, TextEntry
 from kmk.extensions.display.ssd1306 import SSD1306
+from kmk.extensions.display import Display, TextEntry
+from kmk.modules.macros import Macros, Press, Release, Tap, Delay
 
-# ========================================
-# LAYER 0: NUMPAD (Default Layer)
-# ========================================
-# Top:    1        2        3
-# Middle: 4        5        6
-# Bottom: 7        8        9
-# ========================================
-L0_TL, L0_TM, L0_TR = KC.N1, KC.N2, KC.N3
-L0_ML, L0_MM, L0_MR = KC.N4, KC.N5, KC.N6
-L0_BL, L0_BM, L0_BR = KC.N7, KC.N8, KC.N9
+# LAYER 0: SHORTCUTS (Default Layer)
+L0_TL, L0_TM, L0_TR = KC.ESC, KC.LWIN(KC.V), KC.LWIN(KC.L)
+L0_ML, L0_MM, L0_MR = KC.LCTL(KC.Z), KC.LCTL(KC.Y), KC.LCTL(KC.S)
+L0_BL, L0_BM, L0_BR = KC.LCTL(KC.C), KC.LCTL(KC.V), KC.LCTL(KC.X)
 
-# ========================================
-# LAYER 1: SHORTCUTS & MEDIA
-# ========================================
-# Top:    Prev     Play     Next
-# Middle: Undo     Redo     Save
-# Bottom: Copy     Paste    Cut
-# ========================================
-L1_TL, L1_TM, L1_TR = KC.MPRV, KC.MPLY, KC.MNXT
-L1_ML, L1_MM, L1_MR = KC.LCTL(KC.Z), KC.LCTL(KC.Y), KC.LCTL(KC.S)
-L1_BL, L1_BM, L1_BR = KC.LCTL(KC.C), KC.LCTL(KC.V), KC.LCTL(KC.X)
+# LAYER 1: SYSTEM & BROWSER UTILITIES
+L1_TL, L1_TM, L1_TR = KC.LWIN(KC.I), KC.LWIN(KC.R), KC.LWIN(KC.S)
+L1_ML, L1_MM, L1_MR = KC.LCTL(KC.LSHIFT(KC.ESC)), KC.LWIN(KC.N), KC.LWIN(KC.L)
+L1_BL, L1_BM, L1_BR = KC.LCTL(KC.H), KC.LCTL(KC.J), KC.LCTL(KC.LSHIFT(KC.R))
 
-# ========================================
-# LAYER 2: FUNCTION KEYS
-# ========================================
-# Top:    F1       F2       F3
-# Middle: F4       F5       F6
-# Bottom: F7       F8       F9
-# ========================================
-L2_TL, L2_TM, L2_TR = KC.F1, KC.F2, KC.F3
-L2_ML, L2_MM, L2_MR = KC.F4, KC.F5, KC.F6
-L2_BL, L2_BM, L2_BR = KC.F7, KC.F8, KC.F9
+# LAYER 2: NAVIGATION (WASD + ARROWS)
+L2_TL, L2_TM, L2_TR = KC.UP, KC.W, KC.DOWN
+L2_ML, L2_MM, L2_MR = KC.A, KC.S, KC.D
+L2_BL, L2_BM, L2_BR = KC.LEFT, KC.TAB, KC.RIGHT
 
-# ========================================
-# LAYER 3: NAVIGATION (WASD + ARROWS)
-# ========================================
-# Top:    Up       W/Up     Down
-# Middle: A/Left   S/Down   D/Right
-# Bottom: Left     Tab      Right
-# ========================================
-L3_TL, L3_TM, L3_TR = KC.UP, KC.W, KC.DOWN
-L3_ML, L3_MM, L3_MR = KC.A, KC.S, KC.D
-L3_BL, L3_BM, L3_BR = KC.LEFT, KC.TAB, KC.RIGHT
+# LAYER 3: CODING
+L3_TL, L3_TM, L3_TR = KC.LCTL(KC.SLASH), KC.TAB, KC.LALT(KC.LSHIFT(KC.F))
+L3_ML, L3_MM, L3_MR = KC.LCTL(KC.F), KC.LCTL(KC.H), KC.LCTL(KC.A)
+L3_BL, L3_BM, L3_BR = KC.LCTL(KC.GRAVE), KC.LSHIFT(KC.TAB), KC.DQUO
 
-# ========================================
-# LAYER 4: MOUSE UTILITIES
-# ========================================
-# Top:    M.Up     LClick   RClick
-# Middle: M.Left   MClick   M.Right
-# Bottom: M.Down   Jiggler  Scroll
-# ========================================
-L4_TL, L4_TM, L4_TR = KC.MS_UP, KC.MB_LMB, KC.MB_RMB
-L4_ML, L4_MM, L4_MR = KC.MS_LT, KC.MB_MMB, KC.MS_RT
-L4_BL, L4_BM, L4_BR = KC.MS_DN, KC.MJ_TOGGLE, KC.MW_UP
+# LAYER 4: MEETINGS
+L4_TL, L4_TM, L4_TR = KC.LCTL(KC.LSHIFT(KC.O)), KC.LCTL(KC.LSHIFT(KC.M)), KC.LCTL(KC.LSHIFT(KC.H))
+L4_ML, L4_MM, L4_MR = KC.SPC, KC.LWIN(KC.LALT(KC.R)), KC.LWIN(KC.LSHIFT(KC.S))
+L4_BL, L4_BM, L4_BR = KC.LWIN(KC.DOT), KC.LCTL(KC.LSHIFT(KC.K)), KC.LCTL(KC.LSHIFT(KC.E))
+
+# LAYER 5: NUMPAD
+L5_TL, L5_TM, L5_TR = KC.N1, KC.N2, KC.N3
+L5_ML, L5_MM, L5_MR = KC.N4, KC.N5, KC.N6
+L5_BL, L5_BM, L5_BR = KC.N7, KC.N8, KC.N9
+
+# LAYER 6: FUNCTION KEYS
+L6_TL, L6_TM, L6_TR = KC.F1, KC.F2, KC.F3
+L6_ML, L6_MM, L6_MR = KC.F4, KC.F5, KC.F6
+L6_BL, L6_BM, L6_BR = KC.F7, KC.F8, KC.F9
 
 #  EDIT DISPLAY
 LINE1 = "Rainier's Hackpad"
@@ -93,99 +72,71 @@ macros = Macros()
 encoder_handler = EncoderHandler()
 combos = Combos()
 layers = Layers()
-mousekeys = MouseKeys(max_speed=10, acc_interval=20, move_step=2)
-jiggler = MouseJiggler(period_ms=5000, move_step=1)
+mousekeys = MouseKeys(max_speed=20, acc_interval=10, move_step=5)
 
 keyboard.modules.append(layers)
 keyboard.modules.append(macros)
 keyboard.modules.append(encoder_handler)
 keyboard.modules.append(combos)
 keyboard.modules.append(mousekeys)
-keyboard.modules.append(jiggler)
 keyboard.extensions.append(MediaKeys())
 
-# ========================================
 # KEYMAP LAYOUT
 # Physical layout (3x3 grid):
 # Row 0: Col 0, Col 1, Col 2  →  TL, TM, TR
 # Row 1: Col 0, Col 1, Col 2  →  ML, MM, MR
 # Row 2: Col 0, Col 1, Col 2  →  BL, BM, BR
-# 
 # Layer switching via TOP ROW combos
-# ========================================
 keyboard.keymap = [
-    [   # LAYER 0 - NUMPAD
-        # Top:    1          2          3
-        # Middle: 4          5          6
-        # Bottom: 7          8          9
+    [
         L0_TL,    L0_ML,    L0_BL,
         L0_TM,    L0_MM,    L0_BM,
         L0_TR,    L0_MR,    L0_BR,
     ],
-    [   # LAYER 1 - SHORTCUTS & MEDIA
-        # Top:    Prev       Play       Next
-        # Middle: Undo       Redo       Save
-        # Bottom: Copy       Paste      Cut
+    [
         L1_TL,    L1_ML,    L1_BL,
         L1_TM,    L1_MM,    L1_BM,
         L1_TR,    L1_MR,    L1_BR,
     ],
-    [   # LAYER 2 - FUNCTION KEYS
-        # Top:    F1         F2         F3
-        # Middle: F4         F5         F6
-        # Bottom: F7         F8         F9
+    [
         L2_TL,    L2_ML,    L2_BL,
         L2_TM,    L2_MM,    L2_BM,
         L2_TR,    L2_MR,    L2_BR,
     ],
-    [   # LAYER 3 - NAVIGATION (WASD + ARROWS)
-        # Top:    Up         W/Up       Down
-        # Middle: A/Left     S/Down     D/Right
-        # Bottom: Left       Tab        Right
+    [
         L3_TL,    L3_ML,    L3_BL,
         L3_TM,    L3_MM,    L3_BM,
         L3_TR,    L3_MR,    L3_BR,
     ],
-    [   # LAYER 4 - MOUSE UTILITIES
-        # Top:    M.Up       LClick     RClick
-        # Middle: M.Left     MClick     M.Right
-        # Bottom: M.Down     Jiggler    Scroll
+    [
         L4_TL,    L4_ML,    L4_BL,
         L4_TM,    L4_MM,    L4_BM,
         L4_TR,    L4_MR,    L4_BR,
     ],
+    [
+        L5_TL,    L5_ML,    L5_BL,
+        L5_TM,    L5_MM,    L5_BM,
+        L5_TR,    L5_MR,    L5_BR,
+    ],
+    [
+        L6_TL,    L6_ML,    L6_BL,
+        L6_TM,    L6_MM,    L6_BM,
+        L6_TR,    L6_MR,    L6_BR,
+    ],
 ]
 
-# ========================================
 # COMBOS
-# Hardware correction combos (for PCB issues)
-# + Layer switching combos (THREE-KEY combos)
-# ========================================
 combos.combos = [
-    # ===== LAYER SWITCHING COMBOS (LISTED FIRST FOR PRIORITY) =====
-    # Three-key combos using TOP ROW - cycles through all 5 layers
-    
-    # From Layer 0 (Numpad) → Layer 1 (Shortcuts)
-    # Press ALL THREE TOP KEYS: 1 + 2 + 3
+    # LAYER SWITCHING COMBOS
     Chord((L0_TL, L0_TM, L0_TR), KC.TO(1)),
-    
-    # From Layer 1 (Shortcuts) → Layer 2 (Functions)  
-    # Press ALL THREE TOP KEYS: Prev + Play + Next
     Chord((L1_TL, L1_TM, L1_TR), KC.TO(2)),
-    
-    # From Layer 2 (Functions) → Layer 3 (Navigation)
-    # Press ALL THREE TOP KEYS: F1 + F2 + F3
     Chord((L2_TL, L2_TM, L2_TR), KC.TO(3)),
-    
-    # From Layer 3 (Navigation) → Layer 4 (Mouse)
-    # Press ALL THREE TOP KEYS: W + Up + PgUp
     Chord((L3_TL, L3_TM, L3_TR), KC.TO(4)),
-    
-    # From Layer 4 (Mouse) → Layer 0 (Numpad)
-    # Press ALL THREE TOP KEYS: M.Up + LClick + RClick
-    Chord((L4_TL, L4_TM, L4_TR), KC.TO(0)),
+    Chord((L4_TL, L4_TM, L4_TR), KC.TO(5)),
+    Chord((L5_TL, L5_TM, L5_TR), KC.TO(6)),
+    Chord((L6_TL, L6_TM, L6_TR), KC.TO(0)),
 
-    # ===== HARDWARE CORRECTION COMBOS =====
+    # HARDWARE CORRECTION COMBOS
     # Layer 0 corrections
     Chord((L0_TL, L0_ML), L0_ML),
     Chord((L0_ML, L0_BL), L0_BL),
@@ -225,28 +176,39 @@ combos.combos = [
     Chord((L4_MM, L4_BM), L4_BM),
     Chord((L4_TR, L4_MR), L4_MR),
     Chord((L4_MR, L4_BR), L4_BR),
+
+    # Layer 5 corrections
+    Chord((L5_TL, L5_ML), L5_ML),
+    Chord((L5_ML, L5_BL), L5_BL),
+    Chord((L5_TM, L5_MM), L5_MM),
+    Chord((L5_MM, L5_BM), L5_BM),
+    Chord((L5_TR, L5_MR), L5_MR),
+    Chord((L5_MR, L5_BR), L5_BR),
+
+    # Layer 6 corrections
+    Chord((L6_TL, L6_ML), L6_ML),
+    Chord((L6_ML, L6_BL), L6_BL),
+    Chord((L6_TM, L6_MM), L6_MM),
+    Chord((L6_MM, L6_BM), L6_BM),
+    Chord((L6_TR, L6_MR), L6_MR),
+    Chord((L6_MR, L6_BR), L6_BR),
 ]
 
-# ========================================
 # ENCODER CONFIGURATION
 # Pins: D3 (CLK), D6 (DT), None (no switch)
-# Layer 0-3: Volume Down / Volume Up / Mute
-# Layer 4 (Mouse): Scroll Up / Scroll Down / Middle Click
-# ========================================
 encoder_handler.pins = ((board.D3, board.D6, None),)
 encoder_handler.map = [
-    ((KC.VOLD, KC.VOLU, KC.MUTE),),      # Layer 0 - Volume
-    ((KC.VOLD, KC.VOLU, KC.MUTE),),      # Layer 1 - Volume
-    ((KC.VOLD, KC.VOLU, KC.MUTE),),      # Layer 2 - Volume
-    ((KC.VOLD, KC.VOLU, KC.MUTE),),      # Layer 3 - Volume
-    ((KC.MW_DN, KC.MW_UP, KC.MB_MMB),),  # Layer 4 - Scroll (reversed for natural feel)
+    ((KC.VOLD, KC.VOLU, KC.MUTE),),                             # Layer 0 - Volume
+    ((KC.BRIGHTNESS_DOWN, KC.BRIGHTNESS_UP, KC.LWIN(KC.D)),),   # Layer 1 - Brightness
+    ((KC.MW_DN, KC.MW_UP, KC.MB_MMB),),                         # Layer 2 - Scroll
+    ((KC.VOLD, KC.VOLU, KC.MUTE),),                             # Layer 3 - Volume
+    ((KC.VOLD, KC.VOLU, KC.MUTE),),                             # Layer 4 - Volume
+    ((KC.MW_DN, KC.MW_UP, KC.MB_MMB),),                         # Layer 5 - Scroll
+    ((KC.VOLD, KC.VOLU, KC.MUTE),),                             # Layer 6 - Volume
 ]
 
-# ========================================
 # DISPLAY CONFIGURATION
 # SSD1306 OLED (128x32)
-# Shows title and current layer with visual indicator
-# ========================================
 i2c_bus = busio.I2C(board.SCL, board.SDA)
 display_driver = SSD1306(i2c=i2c_bus, device_address=0x3C)
 
@@ -265,11 +227,13 @@ display = Display(
         # Header
         TextEntry(text=LINE1, x=0, y=0),
                 
-        TextEntry(text='Layer 0 Numpad',   x=0, y=16, layer=0),
-        TextEntry(text='Layer 1 Shortcut', x=0, y=16, layer=1),
-        TextEntry(text='Layer 2 Function', x=0, y=16, layer=2),
-        TextEntry(text='Layer 3 Navigate', x=0, y=16, layer=3),
-        TextEntry(text='Layer 4 Mouse',    x=0, y=16, layer=4),
+        TextEntry(text='Layer 0 Shortcut',   x=0, y=16, layer=0),
+        TextEntry(text='Layer 1 System',   x=0, y=16, layer=1),
+        TextEntry(text='Layer 2 Navigate', x=0, y=16, layer=2),
+        TextEntry(text='Layer 3 Coding', x=0, y=16, layer=3),
+        TextEntry(text='Layer 4 Meeting', x=0, y=16, layer=4),
+        TextEntry(text='Layer 5 Numpad',    x=0, y=16, layer=5),
+        TextEntry(text='Layer 6 Function',    x=0, y=16, layer=6),
     ],
 )
 
